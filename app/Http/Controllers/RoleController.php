@@ -10,6 +10,14 @@ use App\Http\Resources\RoleResource;
 
 class RoleController extends Controller
 {
+
+    function ____construct()
+    {
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
+        $this->middleware('permission:role-create', ['only' => ['store']]);
+        $this->middleware('permission:role-edit', ['only' => ['update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +25,6 @@ class RoleController extends Controller
      */
     public function index()
     {
-
         $roles = Role::get();
         return RoleResource::collection($roles);
     }
@@ -30,7 +37,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' =>  'required|unique:roles,name',
+            'permission.*.id' => 'required|exists:permissions,id',
+        ]);
+        $role = Role::create(['name' => $data['name']]);
+        $role->syncPermissions($data['permission']);
+        return (new RoleResource($role))->additional(['status' => true , 'message' => 'create new role successfully'] , 200);
     }
 
     /**
@@ -41,7 +54,8 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        $role = Role::findOrfail($id);
+        return (new RoleResource($role))->additional(['status' => true , 'message' => 'Show  role successfully'] , 200);
     }
 
     /**
@@ -53,7 +67,16 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'name' =>  'required|unique:roles,name',
+            'permission.*.id' => 'required|exists:permissions,id',
+        ]);
+        $role = Role::findOrfail($id);
+        $role->name = $data['name'];
+        $role->save();
+        $role->syncPermissions($data['permission']);
+
+        return (new RoleResource($role))->additional(['status' => true , 'message' => 'Update role successfully'] , 200);
     }
 
     /**
@@ -64,6 +87,8 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $role = Role::findOrfail($id);
+        $role->delete();
+        return (new RoleResource($role))->additional(['status' => true , 'message' => 'Delete role successfully'] , 200);
     }
 }

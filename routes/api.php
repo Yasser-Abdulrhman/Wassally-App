@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -40,7 +41,8 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function () {
    });
 
 Route::group(['middleware' => ['auth:api']], function() {
-    Route::apiResource('roles', RoleController::class);
+    Route::Resource('roles', RoleController::class);
+    Route::Resource('users', UserController::class);
 
 });
 
