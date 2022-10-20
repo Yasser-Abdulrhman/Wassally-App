@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\UserController;
 
 
@@ -40,10 +41,12 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function () {
      Route::post('login',[AuthController::class,'login']);
    });
 
-Route::group(['middleware' => ['auth:api']], function() {
+Route::group(['middleware' => ['auth:api' , 'role:superAdmin']], function() {
     Route::Resource('roles', RoleController::class);
+    Route::Resource('permissions', PermissionController::class);
     Route::Resource('users', UserController::class);
-
+    Route::post('assign-role-to-user', [UserController::class , 'assignRoleToUser']);
+    Route::post('give-permission-to-user', [UserController::class , 'givePermissionToUser']);
 });
 
 

@@ -26,6 +26,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'permission-edit' , 'description' => 'Edit permission','guard_name'  =>  'api'],
             ['name' => 'permission-delete' , 'description' => 'Delete permission','guard_name'  =>  'api'],
             ['name' => 'user-list' , 'description' => 'Show all users','guard_name'  =>  'api'],
+            ['name' => 'user-show' , 'description' => 'Show user details','guard_name'  =>  'api'],
             ['name' => 'user-create' , 'description' => 'Create new user','guard_name'  =>  'api'],
             ['name' => 'user-edit' , 'description' => 'Edit user','guard_name'  =>  'api'],
             ['name' => 'user-delete' , 'description' => 'Delete user','guard_name'  =>  'api'],

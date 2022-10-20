@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Spatie\Permission\Models\Permission;
+use App\Http\Resources\PermissionResource;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +15,8 @@ class PermissionController extends Controller
      */
     public function index()
     {
-
+        $permissions = Permission::paginate(50);
+        return PermissionResource::collection($permissions);
     }
 
     /**

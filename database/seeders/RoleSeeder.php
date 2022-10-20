@@ -27,6 +27,7 @@ class RoleSeeder extends Seeder
             'permission-edit',
             'permission-delete',
             'user-list',
+            'user-show',
             'user-create',
             'user-edit',
             'user-delete',
