@@ -7,6 +7,8 @@ use App\Http\Response\Utility\ResponseType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+
 
 
 
@@ -18,16 +20,17 @@ class AuthController extends Controller
         $data = $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
+            'phone' => 'required|numeric|unique:users',
+            'identity_card' => 'required|unique:users',
+            'address' => 'required|max:255',
             'password' => 'required'
         ]);
-
         $data['password'] = bcrypt($request->password);
-
         $user = User::create($data);
-
         $token = $user->createToken('API Token')->accessToken;
-
-        return response([ 'user' => $user, 'token' => $token]);
+        $userRole = Role::where('name' ,'=' , 'user')->get();
+        $user->assignRole($userRole);
+        return (new UserResource($user))->additional(['access token' => $token , 'message' => 'Register  successfully'] , 200);
     }
 
     public function login(Request $request)
@@ -44,15 +47,7 @@ class AuthController extends Controller
 
         $token = auth()->user()->createToken('API Token')->accessToken;
 
-        $user_with_all_direct_permissions = auth()->user()::with('roles.permissions')->get();
-
-
-
-        // return (new OrderResource($this->orderService->show($order->id)))->additional(ResponseType::simpleResponse('Order item', true));
-
-
-
-        return response(['user' => auth()->user(),'roles' =>$user_with_all_direct_permissions , 'token' => $token]);
+        return (new UserResource(auth()->user()))->additional(['access token' => $token , 'message' => 'Login  successfully'] , 200);
 
     }
 
