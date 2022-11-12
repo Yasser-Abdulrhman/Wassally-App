@@ -26,6 +26,7 @@ class UserSeeder extends Seeder
             'address' => 'Assuit',
             'role' => 'superAdmin',
             'password' => bcrypt("yasser01092886654"),
+            'area_id' => 1,
             // 'remember_token' => Str::random(10),
         ]);
         $superAdminRole = Role::where('name' ,'=' , 'superAdmin')->get();
@@ -40,6 +41,7 @@ class UserSeeder extends Seeder
             'address' => 'Assuit',
             'role' => 'admin',
             'password' => bcrypt("yasser01092886655"),
+            'area_id' => 1,
             // 'remember_token' => Str::random(10),
         ]);
         $adminRole = Role::where('name' ,'=' , 'admin')->get();
@@ -54,6 +56,22 @@ class UserSeeder extends Seeder
             'address' => 'Assuit',
             'role' => 'user',
             'password' => bcrypt("yasser01092886656"),
+            'area_id' => 2,
+            // 'remember_token' => Str::random(10),
+        ]);
+        $userRole = Role::where('name' ,'=' , 'user')->get();
+        $user->assignRole($userRole);
+
+        $user= User::create([
+            'name' => 'user2',
+            'email' => "user2@gmail.com",
+            'email_verified_at' => now(),
+            'phone' => '0109288666',
+            'identity_card' => '01092886666',
+            'address' => 'Assuit',
+            'role' => 'user',
+            'password' => bcrypt("yasser01092886654"),
+            'area_id' => 3,
             // 'remember_token' => Str::random(10),
         ]);
         $userRole = Role::where('name' ,'=' , 'user')->get();
