@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Person extends Model
+class Area extends Model
 {
     use HasFactory , SoftDeletes;
 }

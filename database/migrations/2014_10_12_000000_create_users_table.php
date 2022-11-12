@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('phone');
-            $table->integer('identity_card');
-            $table->string('address');
+            $table->unsignedBigInteger('phone');
+            $table->unsignedBigInteger('identity_card');
+            $table->longText('address');
             $table->enum("role",["superAdmin","admin","user","delivery"])->default("user");
             $table->softDeletes();
             $table->rememberToken();

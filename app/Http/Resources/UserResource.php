@@ -5,6 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\PermissionResource;
 use App\Http\Resources\RoleResource;
+use App\Http\Resources\AreaResource;
+use App\Http\Resources\ShipmentResource;
 
 
 class UserResource extends JsonResource
@@ -26,8 +28,11 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'area' => new AreaResource($this->area),
             'roles' => RoleResource::collection($this->roles),
             'user_permissions' => PermissionResource::collection($this->permissions),
+            'shipments_sent' => ShipmentResource::collection($this->sentShipments),
+            'shipments_recieved' => ShipmentResource::collection($this->recievedShipments),
         ];
     }
 }

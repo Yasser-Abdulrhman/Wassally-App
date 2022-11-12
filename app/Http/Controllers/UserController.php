@@ -6,6 +6,8 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\Rule;
+
 
 
 class UserController extends Controller
@@ -55,14 +57,17 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::findOrfail($id);
         $data = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required|numeric|unique:users',
-            'identity_card' => 'required|unique:users',
+            'email' => ['required','email',
+                         Rule::unique('users')->ignore($user->email, 'email')],
+            'phone' => ['required','numeric',
+                         Rule::unique('users')->ignore($user->phone, 'phone')],
+            'identity_card' => ['required','numeric',
+                         Rule::unique('users')->ignore($user->identity_card, 'identity_card')],
             'address' => 'required|max:255',
         ]);
-        $user = User::findOrfail($id);
         $user->update([
             'name' => $data['name'],
             'email' => $data['email'],

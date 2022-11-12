@@ -50,4 +50,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function area()
+    {
+        return $this->belongsTo('App\Models\Area');
+    }
+    public function sentShipments()
+    {
+        return $this->hasMany('App\Models\Shipment' ,'sender_id' , 'id');
+    }
+
+    public function recievedShipments()
+    {
+        return $this->hasMany('App\Models\Shipment' , 'reciever_id' , 'id');
+    }
+
+
 }
